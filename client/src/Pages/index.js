@@ -1,3 +1,3 @@
 import Landing from "./Landing";
-
-export { Landing };
+import Error from "./Error";
+export { Landing, Error };
