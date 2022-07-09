@@ -7,6 +7,7 @@ const FormRow = ({
   labelText,
   labelClass,
   value,
+  name,
 }) => {
   return (
     <div className="form-row">
@@ -18,6 +19,7 @@ const FormRow = ({
         className={className}
         onChange={handleChange}
         value={value}
+        name={name}
       />
     </div>
   );

@@ -1,4 +1,6 @@
 import React from "react";
+import { toast } from "react-toastify";
+
 import Wrapper from "../assets/wrappers/RegisterPage";
 import { Logo, Button, FormRow } from "../components";
 
@@ -11,11 +13,15 @@ const initialState = {
 
 const Register = () => {
   const [values, SetValues] = React.useState(initialState);
+  const inputhandler = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    SetValues({ ...values, [name]: value });
+  };
   const submitHanlder = (e) => {
     e.preventDefault();
   };
   const toggleHangler = () => {
-    console.log("clicked");
     SetValues({ ...values, isMember: !values.isMember });
   };
   return (
@@ -26,23 +32,32 @@ const Register = () => {
 
         {values.isMember && (
           <FormRow
+            name="name"
             labelText=" Name"
             type="text"
             className="form-input"
             labelClass="form-label"
+            value={values.name}
+            handleChange={inputhandler}
           />
         )}
         <FormRow
+          name="email"
           labelText="Email"
           type="email"
           className="form-input"
           labelClass="form-label"
+          value={values.email}
+          handleChange={inputhandler}
         />
         <FormRow
+          name="password"
           labelText="Password"
           type="password"
           className="form-input"
           labelClass="form-label"
+          value={values.password}
+          handleChange={inputhandler}
         />
         <Button type="submit" className={["btn btn-block"]}>
           Submit
