@@ -6,6 +6,7 @@ import notFoundMiddleware from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
 import authRoutes from "./routes/authRoutes.js";
 import JobRoutes from "./routes/jobRoutes.js";
+import "express-async-errors";
 const app = express();
 app.use(express.json());
 // routes
