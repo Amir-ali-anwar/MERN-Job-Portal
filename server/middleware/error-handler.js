@@ -2,9 +2,8 @@ import { StatusCodes } from "http-status-codes";
 
 const errorHandlerMiddleware = (err, req, res, next) => {
   const defaultError = {
-    StatusCodes: StatusCodes.INTERNAL_SERVER_ERROR,
-    msg: "something went Wrong, try again later",
+    statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
   };
-  res.send(500).json({ msg: err });
+  res.status(defaultError.statusCode).json({ msg: err });
 };
 export default errorHandlerMiddleware;
