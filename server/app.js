@@ -7,6 +7,7 @@ import errorHandlerMiddleware from "./middleware/error-handler.js";
 import authRoutes from "./routes/authRoutes.js";
 import JobRoutes from "./routes/jobRoutes.js";
 const app = express();
+app.use(express.json());
 // routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/jobs", JobRoutes);
@@ -14,7 +15,6 @@ app.use("/api/v1/jobs", JobRoutes);
 // middlewares
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
-app.use(express.json());
 const PORT = process.env.port || 4000;
 
 const start = async () => {
