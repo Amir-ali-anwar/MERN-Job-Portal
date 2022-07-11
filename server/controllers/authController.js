@@ -38,5 +38,19 @@ const login = async (req, res) => {
     .status(StatusCodes.OK)
     .json({ isAleadyMember, token, location: isAleadyMember.location });
 };
-const updateUser = async (req, res) => {};
+const updateUser = async (req, res) => {
+  // console.log(req.user.UserID);
+  const { email, name, lastName, location } = req.body;
+  if ((!name, !email, !lastName, !location)) {
+    throw new BadRequestError("please fill all the fields");
+  }
+  const user = await User.findOne({ _id: req.user.UserID });
+  req.user = name;
+  req.email = email;
+  req.lastName = lastName;
+  req.location = location;
+  await user.save();
+  const token = user.CreateJWT();
+  res.status(StatusCodes.OK).json({ user, token, location: user.location });
+};
 export { register, login, updateUser };
