@@ -6,6 +6,7 @@ import morgan from "morgan";
 import connectDB from "./db/connect.js";
 import notFoundMiddleware from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
+import auth from "./middleware/auth.js";
 import authRoutes from "./routes/authRoutes.js";
 import JobRoutes from "./routes/jobRoutes.js";
 
@@ -19,7 +20,7 @@ app.get("/", (req, res) => {
 });
 // routes
 app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/jobs", JobRoutes);
+app.use("/api/v1/jobs", auth, JobRoutes);
 
 // middlewares
 app.use(notFoundMiddleware);

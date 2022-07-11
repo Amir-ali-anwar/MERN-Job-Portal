@@ -1,4 +1,5 @@
 const createJob = (req, res) => {
+  console.log(req.user);
   res.send("createJob");
 };
 const deleteJob = (req, res) => {

@@ -38,7 +38,5 @@ const login = async (req, res) => {
     .status(StatusCodes.OK)
     .json({ isAleadyMember, token, location: isAleadyMember.location });
 };
-const updateUser = async (req, res) => {
-  res.send("updateUser");
-};
+const updateUser = async (req, res) => {};
 export { register, login, updateUser };
