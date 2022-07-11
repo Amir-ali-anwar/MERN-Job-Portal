@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
 import "express-async-errors";
+import morgan from "morgan";
 import connectDB from "./db/connect.js";
 import notFoundMiddleware from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
@@ -10,7 +11,12 @@ import JobRoutes from "./routes/jobRoutes.js";
 
 const app = express();
 app.use(express.json());
-
+if (process.env.NODE_ENV !== "production") {
+  app.use(morgan("tiny"));
+}
+app.get("/", (req, res) => {
+  res.json({ msg: "hahaha" });
+});
 // routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/jobs", JobRoutes);
