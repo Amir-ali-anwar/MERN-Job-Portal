@@ -34,7 +34,6 @@ const Register = () => {
           <FormRow
             name="name"
             labelText=" Name"
-            type="text"
             className="form-input"
             labelClass="form-label"
             value={values.name}
