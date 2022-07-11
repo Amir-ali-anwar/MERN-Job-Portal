@@ -1,6 +1,6 @@
 import User from "../model/User.js";
 import { StatusCodes } from "http-status-codes";
-import { BadRequestError } from "../errors/index.js";
+import { BadRequestError, UnAuthenticatedError } from "../errors/index.js";
 const register = async (req, res, next) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
@@ -20,7 +20,23 @@ const register = async (req, res, next) => {
   });
 };
 const login = async (req, res) => {
-  res.send("login");
+  const { email, password } = req.body;
+  if (!email || !password) {
+    throw new BadRequestError("Please enter email and password");
+  }
+  const isAleadyMember = await User.findOne({ email }).select("+password");
+  if (!isAleadyMember) {
+    throw new UnAuthenticatedError("Please enter email and password");
+  }
+  const isPassword = await isAleadyMember.comparePassword(password);
+  if (!isPassword) {
+    throw new UnAuthenticatedError("Invalid credentials");
+  }
+  const token = isAleadyMember.CreateJWT();
+  isAleadyMember.password = undefined;
+  res
+    .status(StatusCodes.OK)
+    .json({ isAleadyMember, token, location: isAleadyMember.location });
 };
 const updateUser = async (req, res) => {
   res.send("updateUser");
