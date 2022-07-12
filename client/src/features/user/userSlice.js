@@ -43,22 +43,17 @@ const usrSlice = createSlice({
   },
   extraReducers: {
     [registerUser.pending]: (state) => {
-      console.log("pending", state);
       state.isLoading = true;
     },
     [registerUser.fulfilled]: (state, { payload }) => {
-      console.log("fulfilled", state);
-      console.log(" fulfilled payload", payload);
       state.isLoading = false;
       state.user = payload.user;
+      state.showAlert = true;
       state.alertText = "User Created! Redirecting...";
       state.alertType = "success";
       state.token = payload.token;
-      // addUserToLocalStorage(payload.user);
     },
     [registerUser.rejected]: (state, action) => {
-      console.log("rejected", state);
-      console.log("rejected payload", action);
       state.isLoading = false;
       state.alertText = action;
       state.alertType = "danger";
