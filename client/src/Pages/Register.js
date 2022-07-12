@@ -30,6 +30,10 @@ const Register = () => {
       dispatch(displayAlert());
       return;
     }
+    const currentUser = { name, email, password };
+    if (isMember) {
+    } else {
+    }
   };
   setTimeout(() => {
     dispatch(clearAlert());
