@@ -1,6 +1,11 @@
 import { StatusCodes } from "http-status-codes";
-import { BadRequestError, UnAuthenticatedError } from "../errors/index.js";
+import {
+  BadRequestError,
+  UnAuthenticatedError,
+  NotFoundError,
+} from "../errors/index.js";
 import Job from "../model/Job.js";
+import checkPermissions from "../utils/checkPermissions.js";
 const createJob = async (req, res) => {
   const { position, company } = req.body;
   if (!position || !company) {
@@ -22,10 +27,12 @@ const updateJob = async (req, res) => {
     throw new BadRequestError("Please provide the position and company");
   }
   const existingJob = await Job.findOne({ _id: jobId });
-
+  console.log(existingJob);
+  // checkPermissions(req.user, existingJob.createdBy);
   if (!existingJob) {
-    throw new BadRequestError("Job not found");
+    throw new NotFoundError("Job not found");
   }
+
   existingJob.position = position;
   existingJob.company = company;
   await existingJob.save();
