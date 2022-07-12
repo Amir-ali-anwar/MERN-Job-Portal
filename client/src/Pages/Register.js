@@ -1,6 +1,7 @@
 import React from "react";
-import { toast } from "react-toastify";
-
+import { useDispatch, useSelector } from "react-redux";
+import { displayAlert, clearAlert } from "../features/user/userSlice";
+import Alert from "../components/Alert";
 import Wrapper from "../assets/wrappers/RegisterPage";
 import { Logo, Button, FormRow } from "../components";
 
@@ -8,10 +9,14 @@ const initialState = {
   name: "",
   email: "",
   password: "",
-  isMember: false,
+  isMember: true,
 };
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const { isLoading, alertText, alertType, showAlert } = useSelector(
+    (store) => store.user
+  );
   const [values, SetValues] = React.useState(initialState);
   const inputhandler = (e) => {
     const name = e.target.name;
@@ -20,7 +25,17 @@ const Register = () => {
   };
   const submitHanlder = (e) => {
     e.preventDefault();
+    const { name, email, password, isMember } = values;
+    if (!email || !password || (!isMember && !name)) {
+      dispatch(displayAlert());
+      return;
+    }
   };
+  setTimeout(() => {
+    dispatch(clearAlert());
+  }, 3000);
+
+  console.log(values);
   const toggleHangler = () => {
     SetValues({ ...values, isMember: !values.isMember });
   };
@@ -29,6 +44,7 @@ const Register = () => {
       <form className="form" onSubmit={submitHanlder}>
         <Logo />
         <h3>{!values.isMember ? "Login" : "Register"}</h3>
+        {showAlert && <Alert />}
 
         {values.isMember && (
           <FormRow
