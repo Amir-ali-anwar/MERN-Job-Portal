@@ -1,6 +1,11 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { displayAlert, clearAlert } from "../features/user/userSlice";
+import { useNavigate } from "react-router-dom";
+import {
+  displayAlert,
+  clearAlert,
+  registerUser,
+} from "../features/user/userSlice";
 import Alert from "../components/Alert";
 import Wrapper from "../assets/wrappers/RegisterPage";
 import { Logo, Button, FormRow } from "../components";
@@ -13,16 +18,16 @@ const initialState = {
 };
 
 const Register = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isLoading, alertText, alertType, showAlert } = useSelector(
-    (store) => store.user
-  );
+  const { isLoading, showAlert, user } = useSelector((store) => store.user);
   const [values, SetValues] = React.useState(initialState);
   const inputhandler = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     SetValues({ ...values, [name]: value });
   };
+  console.log(values);
   const submitHanlder = (e) => {
     e.preventDefault();
     const { name, email, password, isMember } = values;
@@ -32,14 +37,21 @@ const Register = () => {
     }
     const currentUser = { name, email, password };
     if (isMember) {
+      console.log("already member");
     } else {
+      dispatch(registerUser(currentUser));
     }
   };
   setTimeout(() => {
     dispatch(clearAlert());
   }, 3000);
-
-  console.log(values);
+  React.useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    }
+  }, [user, navigate]);
   const toggleHangler = () => {
     SetValues({ ...values, isMember: !values.isMember });
   };
@@ -47,10 +59,10 @@ const Register = () => {
     <Wrapper className="full-page">
       <form className="form" onSubmit={submitHanlder}>
         <Logo />
-        <h3>{!values.isMember ? "Login" : "Register"}</h3>
+        <h3>{values.isMember ? "Login" : "Register"}</h3>
         {showAlert && <Alert />}
 
-        {values.isMember && (
+        {!values.isMember && (
           <FormRow
             name="name"
             labelText=" Name"
@@ -78,7 +90,11 @@ const Register = () => {
           value={values.password}
           handleChange={inputhandler}
         />
-        <Button type="submit" className={["btn btn-block"]}>
+        <Button
+          type="submit"
+          disabled={isLoading}
+          className={["btn btn-block"]}
+        >
           Submit
         </Button>
         <p>
