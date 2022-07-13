@@ -77,7 +77,7 @@ const usrSlice = createSlice({
     },
     [registerUser.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      state.alertText = payload.msg;
+      state.alertText = payload;
       state.alertType = "danger";
     },
     [loginUser.pending]: (state) => {
@@ -99,7 +99,8 @@ const usrSlice = createSlice({
     },
     [loginUser.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      state.alertText = payload.msg;
+      state.showAlert = true;
+      state.alertText = payload;
       state.alertType = "danger";
     },
   },
