@@ -1,7 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import customFetch from "../../Utils/axios";
+import {
+  addUserToLocalStorage,
+  removeUserToLocalStorage,
+  getUserFromLocalStorage,
+} from "../../Utils/localStorage";
 const token = localStorage.getItem("token");
-const user = localStorage.getItem("user");
+const user = localStorage.getItem("name");
 const userLocation = localStorage.getItem("location");
 
 const initialState = {
@@ -10,7 +15,7 @@ const initialState = {
   alertText: "",
   alertType: "",
   user: user ? JSON.parse(user) : null,
-  token: token,
+  token: token ? JSON.parse(token) : null,
   userLocation: userLocation || "",
 };
 export const registerUser = createAsyncThunk(
@@ -19,6 +24,18 @@ export const registerUser = createAsyncThunk(
     console.log(user);
     try {
       const resp = await customFetch.post("/auth/register", user);
+      return resp.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+export const loginUser = createAsyncThunk(
+  "user/loginuser",
+  async (user, thunkAPI) => {
+    console.log(user);
+    try {
+      const resp = await customFetch.post("/auth/login", user);
       return resp.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg);
@@ -45,16 +62,44 @@ const usrSlice = createSlice({
       state.isLoading = true;
     },
     [registerUser.fulfilled]: (state, { payload }) => {
+      const {
+        user: { name },
+        token,
+        location,
+      } = payload;
       state.isLoading = false;
       state.user = payload.user;
       state.showAlert = true;
       state.alertText = "User Created! Redirecting...";
       state.alertType = "success";
       state.token = payload.token;
+      addUserToLocalStorage({ name, token, location });
     },
-    [registerUser.rejected]: (state, action) => {
+    [registerUser.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      state.alertText = action;
+      state.alertText = payload.msg;
+      state.alertType = "danger";
+    },
+    [loginUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [loginUser.fulfilled]: (state, { payload }) => {
+      const {
+        token,
+        isAleadyMember: { name, location },
+      } = payload;
+      console.log(payload);
+      state.isLoading = false;
+      state.user = name;
+      state.showAlert = true;
+      state.alertText = "Login successfully ! Redirecting...";
+      state.alertType = "success";
+      state.token = token;
+      addUserToLocalStorage({ name, token, location });
+    },
+    [loginUser.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      state.alertText = payload.msg;
       state.alertType = "danger";
     },
   },

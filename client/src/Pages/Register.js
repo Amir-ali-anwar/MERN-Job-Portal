@@ -5,6 +5,7 @@ import {
   displayAlert,
   clearAlert,
   registerUser,
+  loginUser,
 } from "../features/user/userSlice";
 import Alert from "../components/Alert";
 import Wrapper from "../assets/wrappers/RegisterPage";
@@ -27,7 +28,6 @@ const Register = () => {
     const value = e.target.value;
     SetValues({ ...values, [name]: value });
   };
-  console.log(values);
   const submitHanlder = (e) => {
     e.preventDefault();
     const { name, email, password, isMember } = values;
@@ -37,7 +37,7 @@ const Register = () => {
     }
     const currentUser = { name, email, password };
     if (isMember) {
-      console.log("already member");
+      dispatch(loginUser(currentUser));
     } else {
       dispatch(registerUser(currentUser));
     }
