@@ -56,6 +56,12 @@ const usrSlice = createSlice({
       state.alertText = "";
       state.alertType = "";
     },
+    logout: (state) => {
+      state.user = null;
+      state.token = null;
+      state.localStorage = null;
+      removeUserToLocalStorage();
+    },
   },
   extraReducers: {
     [registerUser.pending]: (state) => {
@@ -106,5 +112,5 @@ const usrSlice = createSlice({
   },
 });
 
-export const { displayAlert, clearAlert } = usrSlice.actions;
+export const { displayAlert, clearAlert, logout } = usrSlice.actions;
 export default usrSlice.reducer;

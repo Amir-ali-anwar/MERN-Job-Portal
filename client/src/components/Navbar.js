@@ -1,8 +1,12 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { FaAlignLeft, FaUserCircle, FaCaretDown } from "react-icons/fa";
 import Wrapper from "../assets/wrappers/Navbar";
 import { Button, Logo } from "../components/";
+import { logout } from "../features/user/userSlice";
+
 const Navbar = () => {
+  const dispatch = useDispatch();
   const [toggleSideBar, SettoggleSideBar] = React.useState(false);
   const [toggleLogOut, SettoggleLogOut] = React.useState(false);
   const logoutHandler = () => {
@@ -34,7 +38,7 @@ const Navbar = () => {
           <Button
             type="button"
             className="dropdown-btn"
-            handleChange={logoutHandler}
+            handleChange={() => dispatch(logout())}
           >
             logout
           </Button>
