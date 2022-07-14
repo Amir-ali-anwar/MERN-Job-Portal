@@ -26,7 +26,7 @@ const login = async (req, res) => {
   }
   const isAleadyMember = await User.findOne({ email }).select("+password");
   if (!isAleadyMember) {
-    throw new UnAuthenticatedError("Please enter email and password");
+    throw new UnAuthenticatedError("Not A Member? Please Register First");
   }
   const isPassword = await isAleadyMember.comparePassword(password);
   if (!isPassword) {

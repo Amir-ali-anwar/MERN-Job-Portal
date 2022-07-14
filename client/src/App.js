@@ -7,8 +7,6 @@ import {
   Stats,
 } from "./Pages/Dashboard";
 import { Route, Routes } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import React from "react";
 function App() {
   return (
@@ -31,7 +29,6 @@ function App() {
         <Route path="/landing" element={<Landing />} />
         <Route path="*" element={<Error />}></Route>
       </Routes>
-      <ToastContainer position="top-center" limit={1} />
     </>
   );
 }
