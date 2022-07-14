@@ -98,13 +98,13 @@ const Register = () => {
           Submit
         </Button>
         <p>
-          {values.isMember ? "Already a member?" : "Not a member yet?"}
+          {values.isMember ? "Not a member yet?" : "Already a member?"}
           <Button
             type="submit"
             className={["member-btn"]}
             handleChange={toggleHangler}
           >
-            Login
+            {!values.isMember ? "Login" : "Register"}
           </Button>
         </p>
       </form>
