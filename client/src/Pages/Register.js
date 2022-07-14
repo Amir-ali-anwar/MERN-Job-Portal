@@ -91,6 +91,7 @@ const Register = () => {
           handleChange={inputhandler}
         />
         <Button
+          size="sm"
           type="submit"
           disabled={isLoading}
           className={["btn btn-block"]}
