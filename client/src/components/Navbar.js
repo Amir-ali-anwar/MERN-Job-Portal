@@ -7,7 +7,7 @@ import { logout } from "../features/user/userSlice";
 import { sidebarToggleHandler } from "../features/user/userSlice";
 const Navbar = () => {
   const dispatch = useDispatch();
-  const { sidebarToggle, user } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const [toggleLogOut, SettoggleLogOut] = React.useState(false);
   const logoutHandler = () => {
     SettoggleLogOut(!toggleLogOut);
@@ -22,23 +22,23 @@ const Navbar = () => {
         >
           <FaAlignLeft />
         </Button>
-      </div>
-      <div>
-        <Logo />
-        <h3 className="logo-text">Dashboard</h3>
-      </div>
-      <div className="btn-container">
-        <Button type="button" className="btn" handleChange={logoutHandler}>
-          <FaUserCircle /> {user || "default user"} <FaCaretDown />
-        </Button>
-        <div className={`dropdown ${toggleLogOut ? "show-dropdown" : ""}`}>
-          <Button
-            type="button"
-            className="dropdown-btn"
-            handleChange={() => dispatch(logout())}
-          >
-            logout
+        <div>
+          <Logo />
+          <h3 className="logo-text">Dashboard</h3>
+        </div>
+        <div className="btn-container">
+          <Button type="button" className="btn" handleChange={logoutHandler}>
+            <FaUserCircle /> {user || "default user"} <FaCaretDown />
           </Button>
+          <div className={`dropdown ${toggleLogOut ? "show-dropdown" : ""}`}>
+            <Button
+              type="button"
+              className="dropdown-btn"
+              handleChange={() => dispatch(logout())}
+            >
+              logout
+            </Button>
+          </div>
         </div>
       </div>
     </Wrapper>

@@ -41,6 +41,17 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+export const UpdateUser = createAsyncThunk(
+  "user/UpdateUser",
+  async (user, thunkAPI) => {
+    try {
+      const resp = await customFetch.patch("/auth/updateUser", user);
+      return resp.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
 const usrSlice = createSlice({
   name: "user",
   initialState,
@@ -92,13 +103,14 @@ const usrSlice = createSlice({
       state.isLoading = true;
     },
     [loginUser.fulfilled]: (state, { payload }) => {
+      console.log(payload);
       const {
         token,
         isAleadyMember: { name, location },
       } = payload;
       console.log(payload);
       state.isLoading = false;
-      state.user = name;
+      state.user = payload.isAleadyMember;
       state.showAlert = true;
       state.alertText = "Login successfully ! Redirecting...";
       state.alertType = "success";
