@@ -1,19 +1,17 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaAlignLeft, FaUserCircle, FaCaretDown } from "react-icons/fa";
 import Wrapper from "../assets/wrappers/Navbar";
 import { Button, Logo } from "../components/";
 import { logout } from "../features/user/userSlice";
-
+import { sidebarToggleHandler } from "../features/user/userSlice";
 const Navbar = () => {
   const dispatch = useDispatch();
-  const [toggleSideBar, SettoggleSideBar] = React.useState(false);
+  const { sidebarToggle, user } = useSelector((state) => state.user);
   const [toggleLogOut, SettoggleLogOut] = React.useState(false);
+  console.log(user);
   const logoutHandler = () => {
     SettoggleLogOut(!toggleLogOut);
-  };
-  const sideBarToggleHandler = () => {
-    SettoggleSideBar(!toggleSideBar);
   };
   return (
     <Wrapper>
@@ -21,7 +19,7 @@ const Navbar = () => {
         <Button
           type="button"
           className="toggle-btn"
-          handleChange={sideBarToggleHandler}
+          handleChange={() => dispatch(sidebarToggleHandler())}
         >
           <FaAlignLeft />
         </Button>
@@ -32,7 +30,7 @@ const Navbar = () => {
       </div>
       <div className="btn-container">
         <Button type="button" className="btn" handleChange={logoutHandler}>
-          <FaUserCircle /> Amir <FaCaretDown />
+          <FaUserCircle /> {user || "default user"} <FaCaretDown />
         </Button>
         <div className={`dropdown ${toggleLogOut ? "show-dropdown" : ""}`}>
           <Button

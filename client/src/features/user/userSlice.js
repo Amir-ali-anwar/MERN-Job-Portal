@@ -17,11 +17,11 @@ const initialState = {
   user: user ? JSON.parse(user) : null,
   token: token ? JSON.parse(token) : null,
   userLocation: userLocation || "",
+  sidebarToggle: false,
 };
 export const registerUser = createAsyncThunk(
   "user/registeruser",
   async (user, thunkAPI) => {
-    console.log(user);
     try {
       const resp = await customFetch.post("/auth/register", user);
       return resp.data;
@@ -33,7 +33,6 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   "user/loginuser",
   async (user, thunkAPI) => {
-    console.log(user);
     try {
       const resp = await customFetch.post("/auth/login", user);
       return resp.data;
@@ -61,6 +60,9 @@ const usrSlice = createSlice({
       state.token = null;
       state.localStorage = null;
       removeUserToLocalStorage();
+    },
+    sidebarToggleHandler: (state) => {
+      state.sidebarToggle = !state.sidebarToggle;
     },
   },
   extraReducers: {
@@ -112,5 +114,6 @@ const usrSlice = createSlice({
   },
 });
 
-export const { displayAlert, clearAlert, logout } = usrSlice.actions;
+export const { displayAlert, clearAlert, logout, sidebarToggleHandler } =
+  usrSlice.actions;
 export default usrSlice.reducer;
