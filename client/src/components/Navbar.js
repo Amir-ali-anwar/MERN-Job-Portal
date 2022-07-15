@@ -9,7 +9,6 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const { sidebarToggle, user } = useSelector((state) => state.user);
   const [toggleLogOut, SettoggleLogOut] = React.useState(false);
-  console.log(user);
   const logoutHandler = () => {
     SettoggleLogOut(!toggleLogOut);
   };
