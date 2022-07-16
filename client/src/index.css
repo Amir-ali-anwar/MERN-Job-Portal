@@ -203,6 +203,12 @@ ul {
   color: var(--green-dark);
   background: var(--green-light);
 }
+html body .error-boundary-div {
+  height: 300px !important;
+}
+.error-boundary-div pre {
+  font-size: 15px;
+}
 /* form */
 
 .form {

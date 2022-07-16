@@ -2,16 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Button } from "../components/";
 import { ErrorBoundary } from "react-error-boundary";
-import Wrapper from "../assets/wrappers/RegisterPage";
+import Wrapper from "../assets/wrappers/Navbar";
 const ErrorHandler = ({ error, resetErrorBoundary }) => {
   return (
-    <Wrapper>
-      <div role="alert">
+    <Wrapper className="error-boundary-div">
+      <div role="nav-center">
         <p>An error occurred:</p>
         <pre>{error.message}</pre>
-        <Button className={["member-btn"]} handleChange={resetErrorBoundary}>
-          Try again
-        </Button>
+        <div className="btn-container">
+          <Button className={"btn"} handleChange={resetErrorBoundary}>
+            Try again
+          </Button>
+        </div>
       </div>
     </Wrapper>
   );
