@@ -2,21 +2,19 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import customFetch from "../../Utils/axios";
 import {
   addUserToLocalStorage,
-  removeUserToLocalStorage,
   getUserFromLocalStorage,
+  removeUserFromLocalStorage,
+  addTokenToLocalStorage,
+  getTokenFromLocalStorage,
 } from "../../Utils/localStorage";
-const token = localStorage.getItem("token");
-const user = localStorage.getItem("user");
-const userLocation = localStorage.getItem("location");
 
 const initialState = {
   isLoading: false,
   showAlert: false,
   alertText: "",
   alertType: "",
-  user: user ? JSON.parse(user) : null,
-  token: token ? JSON.parse(token) : null,
-  userLocation: userLocation || "",
+  user: getUserFromLocalStorage(),
+  token: getTokenFromLocalStorage(),
   sidebarToggle: false,
 };
 export const registerUser = createAsyncThunk(
@@ -70,7 +68,7 @@ const usrSlice = createSlice({
       state.user = null;
       state.token = null;
       state.localStorage = null;
-      removeUserToLocalStorage();
+      removeUserFromLocalStorage();
     },
     sidebarToggleHandler: (state) => {
       state.sidebarToggle = !state.sidebarToggle;
@@ -81,15 +79,15 @@ const usrSlice = createSlice({
       state.isLoading = true;
     },
     [registerUser.fulfilled]: (state, { payload }) => {
-      const { isAleadyMember: user, token, location } = payload;
+      const { isAleadyMember: user, token } = payload;
       state.isLoading = false;
-      state.user = user;
       state.showAlert = true;
       state.alertText = "User Created! Redirecting...";
       state.alertType = "success";
-      state.token = payload.token;
-      state.userLocation = location;
-      addUserToLocalStorage({ user, token, location });
+      state.user = user;
+      state.token = token;
+      addUserToLocalStorage(user);
+      addTokenToLocalStorage(token);
     },
     [registerUser.rejected]: (state, { payload }) => {
       state.isLoading = false;
@@ -101,15 +99,15 @@ const usrSlice = createSlice({
       state.isLoading = true;
     },
     [loginUser.fulfilled]: (state, { payload }) => {
-      const { token, location, isAleadyMember: user } = payload;
+      const { isAleadyMember: user, token } = payload;
       state.isLoading = false;
       state.user = user;
+      state.token = token;
       state.showAlert = true;
       state.alertText = "Login successfully ! Redirecting...";
       state.alertType = "success";
-      state.token = token;
-      state.userLocation = location;
-      addUserToLocalStorage({ user, token, location });
+      addUserToLocalStorage(user);
+      addTokenToLocalStorage(token);
     },
     [loginUser.rejected]: (state, { payload }) => {
       state.isLoading = false;
@@ -120,6 +118,10 @@ const usrSlice = createSlice({
   },
 });
 
-export const { displayAlert, clearAlert, logout, sidebarToggleHandler } =
-  usrSlice.actions;
+export const {
+  displayAlert,
+  clearAlert,
+  logout,
+  sidebarToggleHandler,
+} = usrSlice.actions;
 export default usrSlice.reducer;

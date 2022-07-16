@@ -28,7 +28,8 @@ const Navbar = () => {
         </div>
         <div className="btn-container">
           <Button type="button" className="btn" handleChange={logoutHandler}>
-            <FaUserCircle /> {user || "default user"} <FaCaretDown />
+            <FaUserCircle /> {(user && user.name) || "default user"}{" "}
+            <FaCaretDown />
           </Button>
           <div className={`dropdown ${toggleLogOut ? "show-dropdown" : ""}`}>
             <Button
