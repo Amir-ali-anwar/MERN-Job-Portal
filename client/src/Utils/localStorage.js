@@ -1,15 +1,16 @@
-const addUserToLocalStorage = ({ name, token, location }) => {
-  localStorage.setItem("name", JSON.stringify(name));
+const addUserToLocalStorage = ({ user, token, location }) => {
+  console.log(user);
+  localStorage.setItem("user", JSON.stringify(user));
   localStorage.setItem("token", JSON.stringify(token));
   localStorage.setItem("location", JSON.stringify(location));
 };
 const removeUserToLocalStorage = () => {
-  localStorage.removeItem("name");
+  localStorage.removeItem("user");
   localStorage.removeItem("token");
   localStorage.removeItem("location");
 };
 const getUserFromLocalStorage = () => {
-  const User = localStorage.getItem("name");
+  const User = localStorage.getItem("user");
   const userResult = User ? JSON.parse(User) : null;
   const token = localStorage.getItem("token");
   const tokenResult = token ? JSON.parse(token) : null;

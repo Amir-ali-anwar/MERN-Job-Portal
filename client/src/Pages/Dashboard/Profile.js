@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
 import { Button, FormRow, Alert } from "../../components";
 const Profile = () => {
-  const data = useSelector((store) => store.user);
-  console.log(data);
   const inputhandler = () => {
     console.log("clicked");
   };
@@ -12,7 +10,7 @@ const Profile = () => {
     <Wrapper>
       <form className="form">
         <h3>Profile</h3>
-        {data.showAlert && <Alert />}
+        {/* {data.showAlert && <Alert />} */}
         <div className="form-center">
           <FormRow
             name="name"

@@ -6,7 +6,7 @@ import {
   getUserFromLocalStorage,
 } from "../../Utils/localStorage";
 const token = localStorage.getItem("token");
-const user = localStorage.getItem("name");
+const user = localStorage.getItem("user");
 const userLocation = localStorage.getItem("location");
 
 const initialState = {
@@ -81,41 +81,35 @@ const usrSlice = createSlice({
       state.isLoading = true;
     },
     [registerUser.fulfilled]: (state, { payload }) => {
-      const {
-        user: { name },
-        token,
-        location,
-      } = payload;
+      const { isAleadyMember: user, token, location } = payload;
       state.isLoading = false;
-      state.user = payload.user;
+      state.user = user;
       state.showAlert = true;
       state.alertText = "User Created! Redirecting...";
       state.alertType = "success";
       state.token = payload.token;
-      addUserToLocalStorage({ name, token, location });
+      state.userLocation = location;
+      addUserToLocalStorage({ user, token, location });
     },
     [registerUser.rejected]: (state, { payload }) => {
       state.isLoading = false;
       state.alertText = payload;
       state.alertType = "danger";
     },
+    // Login user
     [loginUser.pending]: (state) => {
       state.isLoading = true;
     },
     [loginUser.fulfilled]: (state, { payload }) => {
-      console.log(payload);
-      const {
-        token,
-        isAleadyMember: { name, location },
-      } = payload;
-      console.log(payload);
+      const { token, location, isAleadyMember: user } = payload;
       state.isLoading = false;
-      state.user = payload.isAleadyMember;
+      state.user = user;
       state.showAlert = true;
       state.alertText = "Login successfully ! Redirecting...";
       state.alertType = "success";
       state.token = token;
-      addUserToLocalStorage({ name, token, location });
+      state.userLocation = location;
+      addUserToLocalStorage({ user, token, location });
     },
     [loginUser.rejected]: (state, { payload }) => {
       state.isLoading = false;
