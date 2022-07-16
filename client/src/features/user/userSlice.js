@@ -100,6 +100,7 @@ const usrSlice = createSlice({
     },
     [loginUser.fulfilled]: (state, { payload }) => {
       const { isAleadyMember: user, token } = payload;
+      console.log(token);
       state.isLoading = false;
       state.user = user;
       state.token = token;
@@ -110,6 +111,28 @@ const usrSlice = createSlice({
       addTokenToLocalStorage(token);
     },
     [loginUser.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      state.showAlert = true;
+      state.alertText = payload;
+      state.alertType = "danger";
+    },
+    // update user
+    [UpdateUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [UpdateUser.fulfilled]: (state, { payload }) => {
+      const { isAleadyMember: user, token } = payload;
+      console.log(payload);
+      state.isLoading = false;
+      state.user = user;
+      state.token = token;
+      state.showAlert = true;
+      state.alertText = "Update user successfully!";
+      state.alertType = "success";
+      addUserToLocalStorage(user);
+      addTokenToLocalStorage(token);
+    },
+    [UpdateUser.rejected]: (state, { payload }) => {
       state.isLoading = false;
       state.showAlert = true;
       state.alertText = payload;

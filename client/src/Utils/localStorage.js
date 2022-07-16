@@ -21,7 +21,8 @@ export const RemoveTokenToLocalStorage = () => {
 };
 
 export const getTokenFromLocalStorage = () => {
-  const result = localStorage.getItem("token");
-  const user = result ? JSON.parse(result) : null;
+  const result = localStorage.getItem("token") || "null";
+  let user = result ? JSON.parse(result) : null;
+
   return user;
 };

@@ -1,34 +1,36 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
-import { displayAlert, clearAlert } from "../../features/user/userSlice";
+import {
+  displayAlert,
+  clearAlert,
+  UpdateUser,
+} from "../../features/user/userSlice";
 import { Button, FormRow, Alert } from "../../components";
+import { getTokenFromLocalStorage } from "../../Utils/localStorage";
 const Profile = () => {
   const { isLoading, showAlert, user } = useSelector((store) => store.user);
-
   const dispatch = useDispatch();
   const [values, SetValues] = React.useState({
     name: user.name || "",
     email: user.email || "",
-    lastName: user.lastName || "",
+    lastname: user.lastName || "",
     location: user.location || "",
   });
-  console.log(values);
   const inputhandler = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    console.log("name", name);
-    console.log("value", value);
     SetValues({ ...values, [name]: value });
   };
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log("submit clicked");
-    const { name, email, lastName, location } = values;
-    if (!name || !email || !lastName || !location) {
+    const { name, email, lastname, location } = values;
+    if (!name || !email || !lastname || !location) {
       dispatch(displayAlert());
       return;
     }
+    const updateUser = { name, email, lastname, location };
+    dispatch(UpdateUser(updateUser));
   };
   setTimeout(() => {
     dispatch(clearAlert());
@@ -48,12 +50,12 @@ const Profile = () => {
             value={values.name}
           />
           <FormRow
-            name="Last Name"
+            name="lastname"
             labelText="Last Name"
             className="form-input"
             labelClass="form-label"
             handleChange={inputhandler}
-            value={values.lastName}
+            value={values.lastname}
           />
           <FormRow
             name="email"
@@ -65,7 +67,7 @@ const Profile = () => {
             value={values.email}
           />
           <FormRow
-            name="text"
+            name="location"
             labelText="Location"
             className="form-input"
             labelClass="form-label"
