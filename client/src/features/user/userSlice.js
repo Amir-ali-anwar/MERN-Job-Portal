@@ -7,7 +7,6 @@ import {
   addTokenToLocalStorage,
   getTokenFromLocalStorage,
 } from "../../Utils/localStorage";
-
 const initialState = {
   isLoading: false,
   showAlert: false,

@@ -7,31 +7,29 @@ import { logout } from "../features/user/userSlice";
 const customFetch = axios.create({
   baseURL: "/api/v1/",
 });
+const result = localStorage.getItem("token") || "null";
 
-customFetch.interceptors.request.use(
-  (config) => {
-    const user = addTokenToLocalStorage();
-    console.log(user);
-    if (user) {
-      config.headers.common["Authorization"] = `Bearer ${user}`;
-      return config;
-    }
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-customFetch.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error, thunkAPI) => {
-    // console.log(error.response)
-    if (error.response.status === 401) {
-      thunkAPI.dispatch(logout());
-      return thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
-    }
-    return Promise.reject(error);
-  }
-);
+customFetch.defaults.headers.common["Authorization"] = `Bearer ${result} `;
+
+// customFetch.interceptors.request.use(
+//   (config) => {
+//     config.headers.common["Authorization"] = `Bearer ${result} `;
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
+// customFetch.interceptors.response.use(
+//   (response) => {
+//     return response;
+//   },
+//   (error, thunkAPI) => {
+//     if (error.response.status === 401) {
+//       thunkAPI.dispatch(logout());
+//       thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
+//     }
+//     return Promise.reject(error);
+//   }
+// );
 export default customFetch;
