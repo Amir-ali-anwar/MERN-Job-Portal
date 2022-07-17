@@ -42,7 +42,12 @@ export const UpdateUser = createAsyncThunk(
   "user/UpdateUser",
   async (user, thunkAPI) => {
     try {
-      const resp = await customFetch.patch("/auth/updateUser", user);
+      const resp = await customFetch.patch("/auth/updateUser", user, {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().user.token}`,
+        },
+      });
+      console.log(resp.data);
       return resp.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg);
@@ -99,7 +104,7 @@ const usrSlice = createSlice({
     },
     [loginUser.fulfilled]: (state, { payload }) => {
       const { isAleadyMember: user, token } = payload;
-      console.log(token);
+      // console.log(token);
       state.isLoading = false;
       state.user = user;
       state.token = token;
@@ -121,7 +126,7 @@ const usrSlice = createSlice({
     },
     [UpdateUser.fulfilled]: (state, { payload }) => {
       const { isAleadyMember: user, token } = payload;
-      console.log(payload);
+      console.log("userupdate payload", payload);
       state.isLoading = false;
       state.user = user;
       state.token = token;

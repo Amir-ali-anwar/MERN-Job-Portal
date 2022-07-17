@@ -9,7 +9,7 @@ const customFetch = axios.create({
 });
 const result = localStorage.getItem("token") || "null";
 
-customFetch.defaults.headers.common["Authorization"] = `Bearer ${result} `;
+// customFetch.defaults.headers.common["Authorization"] = `Bearer ${result} `;
 
 // customFetch.interceptors.request.use(
 //   (config) => {
