@@ -44,11 +44,10 @@ export const UpdateUser = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
       const resp = await customFetch.patch("/auth/updateUser", user);
-      console.log(user);
       return resp.data;
     } catch (error) {
-      //  return checkForUnauthorizedResponse(error, thunkAPI);
-      return thunkAPI.rejectWithValue(error.response.data.msg);
+       return checkForUnauthorizedResponse(error, thunkAPI);
+      // return thunkAPI.rejectWithValue(error.response.data.msg);
     }
   }
 );
