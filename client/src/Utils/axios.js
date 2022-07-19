@@ -1,35 +1,43 @@
 import axios from "axios";
 import {
-  getUserFromLocalStorage,
+  getTokenFromLocalStorage,
   addTokenToLocalStorage,
 } from "./localStorage";
 import { logout } from "../features/user/userSlice";
+const result = localStorage.getItem("token") || "null";
+let token = result ? JSON.parse(result) : null;
 const customFetch = axios.create({
   baseURL: "/api/v1/",
 });
-const result = localStorage.getItem("token") || "null";
 
-// customFetch.defaults.headers.common["Authorization"] = `Bearer ${result} `;
+customFetch.interceptors.request.use((config) => {
+  const user = getTokenFromLocalStorage();
+    if (user) {
+    config.headers.common["Authorization"] = `Bearer ${user}`;
+  }
+  return config;
+});
 
-// customFetch.interceptors.request.use(
-//   (config) => {
-//     config.headers.common["Authorization"] = `Bearer ${result} `;
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
-// customFetch.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   (error, thunkAPI) => {
-//     if (error.response.status === 401) {
-//       thunkAPI.dispatch(logout());
-//       thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+
+// export function checkForUnauthorizedResponse(error, thunkAPI) {
+//  if (error.response.status === 401) {
+//    thunkAPI.dispatch(logout());
+//    return thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
+//  }
+//  return thunkAPI.rejectWithValue(error.response.data.msg);
+// }
+axios.interceptors.response.use(
+  function(response) {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    return response;
+  },
+  function(error) {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    return Promise.reject(error);
+  }
+);
+
+
 export default customFetch;

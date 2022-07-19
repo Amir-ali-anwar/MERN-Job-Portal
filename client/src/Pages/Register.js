@@ -49,7 +49,7 @@ const Register = () => {
     if (user) {
       setTimeout(() => {
         navigate("/");
-      }, 6000);
+      }, 4000);
     }
   }, [user, navigate]);
   const toggleHangler = () => {

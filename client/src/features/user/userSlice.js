@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import customFetch from "../../Utils/axios";
+import checkForUnauthorizedResponse from "../../Utils/axios";
 import {
   addUserToLocalStorage,
   getUserFromLocalStorage,
@@ -42,14 +43,11 @@ export const UpdateUser = createAsyncThunk(
   "user/UpdateUser",
   async (user, thunkAPI) => {
     try {
-      const resp = await customFetch.patch("/auth/updateUser", user, {
-        headers: {
-          Authorization: `Bearer ${thunkAPI.getState().user.token}`,
-        },
-      });
-      console.log(resp.data);
+      const resp = await customFetch.patch("/auth/updateUser", user);
+      console.log(user);
       return resp.data;
     } catch (error) {
+      //  return checkForUnauthorizedResponse(error, thunkAPI);
       return thunkAPI.rejectWithValue(error.response.data.msg);
     }
   }
@@ -125,8 +123,7 @@ const usrSlice = createSlice({
       state.isLoading = true;
     },
     [UpdateUser.fulfilled]: (state, { payload }) => {
-      const { isAleadyMember: user, token } = payload;
-      console.log("userupdate payload", payload);
+      const {user, token } = payload;
       state.isLoading = false;
       state.user = user;
       state.token = token;
