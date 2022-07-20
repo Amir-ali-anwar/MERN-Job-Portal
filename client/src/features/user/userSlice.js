@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import customFetch from "../../Utils/axios";
-import checkForUnauthorizedResponse from "../../Utils/axios";
+
 import {
   addUserToLocalStorage,
   getUserFromLocalStorage,
@@ -46,8 +46,7 @@ export const UpdateUser = createAsyncThunk(
       const resp = await customFetch.patch("/auth/updateUser", user);
       return resp.data;
     } catch (error) {
-       return checkForUnauthorizedResponse(error, thunkAPI);
-      // return thunkAPI.rejectWithValue(error.response.data.msg);
+      return thunkAPI.rejectWithValue(error.response.data.msg);
     }
   }
 );
