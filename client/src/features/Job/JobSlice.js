@@ -10,11 +10,10 @@ import {
 
  const result = localStorage.getItem("user") || '';
  const user = result ? JSON.parse(result) : '';
-//  console.log(user)
-const initialState = {
-  isEditing: false,
-  editJobId: "",
-  position: "",
+ const initialState = {
+   isEditing: false,
+   editJobId: "",
+   position: "",
   company: "",
   jobLocation: user.location || "",
   jobTypeOptions: ["full-time", "part-time", "remote", "internship"],
@@ -25,6 +24,7 @@ const initialState = {
   alertText: "",
   alertType: "",
 };
+ console.log(initialState);
 const JobSlice = createSlice({
   name: "Job",
   initialState,
@@ -39,9 +39,9 @@ const JobSlice = createSlice({
       state.alertText = "";
       state.alertType = "";
     },
-    handleChange:(state,{name,value})=>{
-      state[name]=value
-    }
+    handleChange: (state, { payload: { name, value } }) => {
+      state[name] = value;
+    },
   },
 });
 export const { displayAlert, clearAlert, handleChange } = JobSlice.actions;

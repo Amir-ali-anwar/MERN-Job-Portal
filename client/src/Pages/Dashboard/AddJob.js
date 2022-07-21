@@ -20,7 +20,7 @@ const AddJob = () => {
     status,
     statusOptions,
   } = useSelector((store) => store.Job);
-
+console.log(jobLocation);
   const { showAlert, user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const inputhandler = (e) => {
@@ -30,7 +30,7 @@ const AddJob = () => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
-    if (!position || !company) {
+    if (!position || !company || !jobLocation) {
       dispatch(displayAlert());
       return;
     }
@@ -41,7 +41,7 @@ const AddJob = () => {
   }, 3000);
   return (
     <Wrapper>
-      <form className="form" onSubmit={submitHandler}>
+      <form className="form" onSubmit={(e)=>e.preventDefault()}>
         <h3>{isEditing ? "edit job" : "add job"}</h3>
         {showAlert && <Alert />}
         <div className="form-center">
@@ -94,7 +94,14 @@ const AddJob = () => {
             value={status}
           />
           <div className="btn-container">
-            <Button type="submit" className="btn btn-block submit-btn">
+            <Button type="submit" className="btn btn-block clear-btn">
+              clear
+            </Button>
+            <Button
+              type="submit"
+              className="btn btn-block submit-btn"
+              handleChange={submitHandler}
+            >
               Submit
             </Button>
           </div>
