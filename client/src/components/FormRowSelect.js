@@ -8,7 +8,6 @@ const FormRowSelect = ({
   list,
   labelClass,
 }) => {
-  console.log(labelText);
   return (
     <div className="form-row">
       <label htmlFor={labelText} className={labelClass}>

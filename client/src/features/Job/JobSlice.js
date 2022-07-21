@@ -8,12 +8,15 @@ import {
   getTokenFromLocalStorage,
 } from "../../Utils/localStorage";
 
+ const result = localStorage.getItem("user") || '';
+ const user = result ? JSON.parse(result) : '';
+//  console.log(user)
 const initialState = {
   isEditing: false,
   editJobId: "",
   position: "",
   company: "",
-  jobLocation: getUserFromLocalStorage().location || "",
+  jobLocation: user.location || "",
   jobTypeOptions: ["full-time", "part-time", "remote", "internship"],
   jobType: "full-time",
   statusOptions: ["interview", "declined", "pending"],
@@ -36,7 +39,10 @@ const JobSlice = createSlice({
       state.alertText = "";
       state.alertType = "";
     },
+    handleChange:(state,{name,value})=>{
+      state[name]=value
+    }
   },
 });
-export const { displayAlert, clearAlert } = JobSlice.actions;
+export const { displayAlert, clearAlert, handleChange } = JobSlice.actions;
 export default JobSlice.reducer
