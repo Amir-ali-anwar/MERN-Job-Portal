@@ -9,6 +9,7 @@ import ErrorHandler from "./ErrorHandler";
 import FormRowSelect from "./FormRowSelect";
 import JobsContainer from './JobsContainer'
 import SearchContainer from './SearchContainer'
+import Loading from './Loading'
 export {
   SearchContainer,
   JobsContainer,
@@ -21,4 +22,5 @@ export {
   Logo,
   Button,
   FormRow,
+  Loading
 };
