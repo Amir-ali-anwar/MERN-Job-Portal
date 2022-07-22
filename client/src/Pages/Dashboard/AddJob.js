@@ -7,7 +7,7 @@ import {
   clearAlert,
  
 } from "../../features/user/userSlice";
-import { handleChange } from "../../features/Job/JobSlice";
+import { handleChange, CreateJob } from "../../features/Job/JobSlice";
 const AddJob = () => {
   const {
     isLoading,
@@ -20,7 +20,7 @@ const AddJob = () => {
     status,
     statusOptions,
   } = useSelector((store) => store.Job);
-console.log(jobLocation);
+
   const { showAlert, user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const inputhandler = (e) => {
@@ -34,14 +34,14 @@ console.log(jobLocation);
       dispatch(displayAlert());
       return;
     }
-    
+    dispatch(CreateJob({ position, company, jobLocation, status, jobType }));
   };
   setTimeout(() => {
     dispatch(clearAlert());
   }, 3000);
   return (
     <Wrapper>
-      <form className="form" onSubmit={(e)=>e.preventDefault()}>
+      <form className="form" onSubmit={(e) => e.preventDefault()}>
         <h3>{isEditing ? "edit job" : "add job"}</h3>
         {showAlert && <Alert />}
         <div className="form-center">
@@ -82,21 +82,18 @@ console.log(jobLocation);
             value={status}
             handleChange={inputhandler}
             list={jobTypeOptions}
-            labelText="type"
+            labelText="job Type"
             labelClass="form-label"
           />
-          <FormRow
+          {/* <FormRow
             name="job Type"
             labelText="jobType"
             className="form-input"
             labelClass="form-label"
             handleChange={inputhandler}
             value={status}
-          />
+          /> */}
           <div className="btn-container">
-            <Button type="submit" className="btn btn-block clear-btn">
-              clear
-            </Button>
             <Button
               type="submit"
               className="btn btn-block submit-btn"
