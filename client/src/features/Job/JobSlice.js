@@ -43,10 +43,10 @@ export const CreateJob = createAsyncThunk(
 );
 export const GetAllJob = createAsyncThunk(
   "user/Jobs",
-  async (user, thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
-      const resp = await customFetch("/jobs", user);
-      console.log(resp);
+      
+      const resp = await customFetch("/jobs");
       return resp.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg);
@@ -90,9 +90,8 @@ const JobSlice = createSlice({
       state.isLoading = true;
     },
     [GetAllJob.fulfilled]: (state, payload) => {
-      console.log(payload);
       state.isLoading = false;
-      state.jobs = payload.jobs;
+      state.jobs = payload.payload.jobs;
       state.numOfPages = payload.numOfPages;
       state.totalJobs = payload.totalJobs;
     },
