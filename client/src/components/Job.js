@@ -3,7 +3,7 @@ import moment from 'moment'
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
-import {setEditJob,deleteJob} from '../features/Job/JobSlice'
+import { setEditJob, deleteJob, DeleteJob } from "../features/Job/JobSlice";
 import Wrapper from "../assets/wrappers/Job";
 import Button from './Button';
 import JobInfo from './JobInfo';
@@ -47,7 +47,7 @@ const Job = ({
             <Button
               type="button"
               className="btn delete-btn"
-              handleChange={() => dispatch(deleteJob(_id))}
+              handleChange={() => dispatch(DeleteJob(_id))}
             >
               Delete
             </Button>

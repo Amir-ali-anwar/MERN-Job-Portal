@@ -22,9 +22,9 @@ const JobsContainer = () => {
      jobs,
      totalJobs,
    } = useSelector((store) => store.Job);
-    React.useEffect(() => {
-      dispatch(GetAllJob());
-    }, []);
+   React.useEffect(() => {
+     dispatch(GetAllJob());
+   }, []);
     if (isLoading) {
       return <Loading center />;
     }
@@ -38,11 +38,11 @@ const JobsContainer = () => {
     return (
       <Wrapper>
         <h5>
-          {totalJobs} job{jobs.length > 1 && "s"}
+          {jobs.length} job{jobs.length > 1 && "s"} Found
         </h5>
         <div className="jobs">
           {jobs.map((job) => {
-            return <Job  key={job._id} {...job}/>
+            return <Job key={job._id} {...job} />;
           })}
         </div>
       </Wrapper>

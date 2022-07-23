@@ -45,14 +45,22 @@ export const GetAllJob = createAsyncThunk(
   "user/Jobs",
   async (_, thunkAPI) => {
     try {
-      
-      const resp = await customFetch("/jobs");
+       const resp = await customFetch("/jobs");
       return resp.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg);
     }
   }
 );
+export const DeleteJob = createAsyncThunk("user/deleteJobs", async (jobId, thunkAPI) => {
+   try {
+    const resp = await customFetch.delete(`/jobs/${jobId}`);
+    thunkAPI.dispatch(GetAllJob());
+    return resp.data.msg;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+});
 const JobSlice = createSlice({
   name: "Job",
   initialState,
@@ -70,12 +78,9 @@ const JobSlice = createSlice({
     handleChange: (state, { payload: { name, value } }) => {
       state[name] = value;
     },
-    setEditJob:(state,{payload})=>{
+    setEditJob: (state, { payload }) => {
       console.log(payload);
     },
-    deleteJob:(state,{payload})=>{
-       console.log(payload);
-    }
   },
   extraReducers: {
     [CreateJob.pending]: (state) => {
@@ -95,16 +100,29 @@ const JobSlice = createSlice({
     [GetAllJob.pending]: (state) => {
       state.isLoading = true;
     },
-    [GetAllJob.fulfilled]: (state, payload) => {
+    [GetAllJob.fulfilled]: (state, {payload}) => {
+     const {jobs,numOfPages,totalJobs}=payload 
+     
       state.isLoading = false;
-      state.jobs = payload.payload.jobs;
-      state.numOfPages = payload.numOfPages;
-      state.totalJobs = payload.totalJobs;
+      state.jobs = jobs;
+      state.numOfPages = numOfPages;
+      state.totalJobs = totalJobs;
+      console.log(state.totalJobs);
     },
     [GetAllJob.rejected]: (state, { payload }) => {
       state.isLoading = false;
       state.alertText = payload;
       state.alertType = "danger";
+    },
+    [DeleteJob.fulfilled]: (state, { payload }) => {
+      console.log('delete payload',payload)
+      state.isLoading = false;
+      state.alertText = 'job deleted successfully';
+
+    },
+    [DeleteJob.rejected]: (state, { payload }) => {
+     state.isLoading = false;
+     state.alertText = 'some error';
     },
   },
 });
@@ -114,5 +132,7 @@ export const {
          handleChange,
          setEditJob,
          deleteJob,
+         ShowLoading,
+         hideLoading,
        } = JobSlice.actions;
 export default JobSlice.reducer
