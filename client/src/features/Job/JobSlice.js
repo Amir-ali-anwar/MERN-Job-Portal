@@ -70,6 +70,12 @@ const JobSlice = createSlice({
     handleChange: (state, { payload: { name, value } }) => {
       state[name] = value;
     },
+    setEditJob:(state,{payload})=>{
+      console.log(payload);
+    },
+    deleteJob:(state,{payload})=>{
+       console.log(payload);
+    }
   },
   extraReducers: {
     [CreateJob.pending]: (state) => {
@@ -102,5 +108,11 @@ const JobSlice = createSlice({
     },
   },
 });
-export const { displayAlert, clearAlert, handleChange } = JobSlice.actions;
+export const {
+         displayAlert,
+         clearAlert,
+         handleChange,
+         setEditJob,
+         deleteJob,
+       } = JobSlice.actions;
 export default JobSlice.reducer
