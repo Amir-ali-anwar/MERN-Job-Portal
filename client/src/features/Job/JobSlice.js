@@ -8,27 +8,27 @@ import {
   getTokenFromLocalStorage,
 } from "../../Utils/localStorage";
 
- const result = localStorage.getItem("user") || '';
- const user = result ? JSON.parse(result) : '';
- const initialState = {
-   isEditing: false,
-   isLoading: false,
-   editJobId: "",
-   position: "",
-   company: "",
-   jobLocation: user.location || "",
-   jobTypeOptions: ["full-time", "part-time", "remote", "internship"],
-   jobType: "full-time",
-   statusOptions: ["interview", "declined", "pending"],
-   status: "pending",
-   showAlert: false,
-   alertText: "",
-   alertType: "",
-   jobs:[],
-   totalJobs:0,
-   numOfPages:1,
-   page:1
- };
+const result = localStorage.getItem("user") || "";
+const user = result ? JSON.parse(result) : "";
+const initialState = {
+  isEditing: false,
+  isLoading: false,
+  editJobId: "",
+  position: "",
+  company: "",
+  jobLocation: user.location || "",
+  jobTypeOptions: ["full-time", "part-time", "remote", "internship"],
+  jobType: "full-time",
+  statusOptions: ["interview", "declined", "pending"],
+  status: "pending",
+  showAlert: false,
+  alertText: "",
+  alertType: "",
+  jobs: [],
+  totalJobs: 0,
+  numOfPages: 1,
+  page: 1,
+};
 
 export const CreateJob = createAsyncThunk(
   "user/Job",
@@ -41,26 +41,37 @@ export const CreateJob = createAsyncThunk(
     }
   }
 );
-export const GetAllJob = createAsyncThunk(
-  "user/Jobs",
-  async (_, thunkAPI) => {
+export const GetAllJob = createAsyncThunk("user/Jobs", async (_, thunkAPI) => {
+  try {
+    const resp = await customFetch("/jobs");
+    return resp.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+});
+export const DeleteJob = createAsyncThunk(
+  "user/deleteJobs",
+  async (jobId, thunkAPI) => {
     try {
-       const resp = await customFetch("/jobs");
+      const resp = await customFetch.delete(`/jobs/${jobId}`);
+      thunkAPI.dispatch(GetAllJob());
+      return resp.data.msg;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+export const EditJob = createAsyncThunk(
+  "EditJob",
+  async ({ jobId, job }, thunkAPI) => {
+    try {
+      const resp = await customFetch.patch(`/jobs/${jobId}`, job);
       return resp.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg);
     }
   }
 );
-export const DeleteJob = createAsyncThunk("user/deleteJobs", async (jobId, thunkAPI) => {
-   try {
-    const resp = await customFetch.delete(`/jobs/${jobId}`);
-    thunkAPI.dispatch(GetAllJob());
-    return resp.data.msg;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.response.data.msg);
-  }
-});
 const JobSlice = createSlice({
   name: "Job",
   initialState,
@@ -79,7 +90,7 @@ const JobSlice = createSlice({
       state[name] = value;
     },
     setEditJob: (state, { payload }) => {
-      console.log(payload);
+      return { ...state, isEditing: true, ...payload };
     },
   },
   extraReducers: {
@@ -100,9 +111,9 @@ const JobSlice = createSlice({
     [GetAllJob.pending]: (state) => {
       state.isLoading = true;
     },
-    [GetAllJob.fulfilled]: (state, {payload}) => {
-     const {jobs,numOfPages,totalJobs}=payload 
-     
+    [GetAllJob.fulfilled]: (state, { payload }) => {
+      const { jobs, numOfPages, totalJobs } = payload;
+
       state.isLoading = false;
       state.jobs = jobs;
       state.numOfPages = numOfPages;
@@ -115,14 +126,28 @@ const JobSlice = createSlice({
       state.alertType = "danger";
     },
     [DeleteJob.fulfilled]: (state, { payload }) => {
-      console.log('delete payload',payload)
+      console.log("delete payload", payload);
       state.isLoading = false;
-      state.alertText = 'job deleted successfully';
-
+      state.alertText = "job deleted successfully";
     },
     [DeleteJob.rejected]: (state, { payload }) => {
-     state.isLoading = false;
-     state.alertText = 'some error';
+      state.isLoading = false;
+      state.alertText = "some error";
+    },
+    [EditJob.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [EditJob.fulfilled]: (state) => {
+      state.isLoading = false;
+      state.showAlert = true;
+      state.alertText = "successfully updated ";
+      state.alertType = "success";
+    },
+    [EditJob.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      state.showAlert = true;
+      state.alertText = "some error";
+      state.alertType = "danger";
     },
   },
 });
@@ -135,4 +160,4 @@ export const {
          ShowLoading,
          hideLoading,
        } = JobSlice.actions;
-export default JobSlice.reducer
+export default JobSlice.reducer;

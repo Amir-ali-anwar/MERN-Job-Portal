@@ -5,9 +5,9 @@ import { Button, FormRow, Alert, FormRowSelect } from "../../components";
 import {
   displayAlert,
   clearAlert,
- 
+  
 } from "../../features/user/userSlice";
-import { handleChange, CreateJob } from "../../features/Job/JobSlice";
+import { handleChange, CreateJob,EditJob } from "../../features/Job/JobSlice";
 const AddJob = () => {
   const {
     isLoading,
@@ -19,9 +19,10 @@ const AddJob = () => {
     jobTypeOptions,
     status,
     statusOptions,
+    editJobId,
   } = useSelector((store) => store.Job);
 
-  const { showAlert, user } = useSelector((store) => store.user);
+  const { showAlert} = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const inputhandler = (e) => {
     const name = e.target.name;
@@ -34,6 +35,15 @@ const AddJob = () => {
       dispatch(displayAlert());
       return;
     }
+     if (isEditing) {
+       dispatch(
+         EditJob({
+           jobId: editJobId,
+           job: { position, company, jobLocation, jobType, status },
+         })
+       );
+       return;
+     }
     dispatch(CreateJob({ position, company, jobLocation, status, jobType }));
   };
   setTimeout(() => {
