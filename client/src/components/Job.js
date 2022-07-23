@@ -6,6 +6,7 @@ import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
 import {setEditJob,deleteJob} from '../features/Job/JobSlice'
 import Wrapper from "../assets/wrappers/Job";
 import Button from './Button';
+import JobInfo from './JobInfo';
 const Job = ({
   company,
   createdAt,
@@ -28,6 +29,12 @@ const Job = ({
         </div>
       </header>
       <div className="content">
+        <div className="content-center">
+          <JobInfo icon={<FaLocationArrow />} text={jobLocation} />
+          <JobInfo icon={<FaBriefcase />} text={jobType} />
+          <JobInfo icon={<FaCalendarAlt />} text={date} />
+          <div className={`status ${status}`}>{status}</div>
+        </div>
         <footer>
           <div className="actions">
             <Link
