@@ -7,6 +7,11 @@ const initialState = {
   showAlert: false,
   alertText: "",
   alertType: "",
+  search: "",
+  searchType: "all",
+  searchStatus: "all",
+  sort: "latest",
+  sortOptions: ["latest", "oldest", "a-z", "z-a"],
 };
 
 export const ShowStats = createAsyncThunk('showStats',async (_, thunkAPI) => {
@@ -37,10 +42,10 @@ const StatusSlice = createSlice({
     },
     [ShowStats.rejected]: (state) => {
       state.isLoading = false;
-        state.isLoading = false;
-        state.showAlert = true;
-        state.alertText = "some error";
-        state.alertType = "danger";
+      state.isLoading = false;
+      state.showAlert = true;
+      state.alertText = "some error";
+      state.alertType = "danger";
     },
   },
 });
