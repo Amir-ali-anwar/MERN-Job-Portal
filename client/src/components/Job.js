@@ -3,7 +3,7 @@ import moment from 'moment'
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
-import { setEditJob, deleteJob, DeleteJob } from "../features/Job/JobSlice";
+import { setEditJob, DeleteJob } from "../features/Job/JobSlice";
 import Wrapper from "../assets/wrappers/Job";
 import Button from './Button';
 import JobInfo from './JobInfo';

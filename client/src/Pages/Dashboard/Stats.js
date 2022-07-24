@@ -1,16 +1,17 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Loading, StatsContainer, ChartContainer } from "../../components";
-import { showstats } from "../../features/Stats/StatsSlice";
+import { ShowStats } from "../../features/Stats/StatsSlice";
 const Stats = () => {
   const dispatch = useDispatch();
-  const { isLoading, stats, monthlyApplications } = useSelector(
+  const { isLoading, monthlyApplications } = useSelector(
     (store) => store.Stats
   );
-  console.log(isLoading)
+ 
   React.useEffect(() => {
-    showstats();
+    dispatch(ShowStats());
   }, []);
+
   if (isLoading) {
     return <Loading center />;
   }

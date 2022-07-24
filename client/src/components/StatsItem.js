@@ -1,8 +1,14 @@
 import React from 'react'
-
-const StatsItem = () => {
+import Wrapper from '../assets/wrappers/StatItem'
+const StatsItem = ({title,count,icon,color,bcg}) => {
   return (
-    <div>StatsItem</div>
+    <Wrapper color={color} bcg={bcg}>
+      <header>
+        <span className='count'>{count}</span>
+        <span className='icon'>{icon}</span>
+      </header>
+        <span className='title'>{title}</span>
+    </Wrapper>
   )
 }
 

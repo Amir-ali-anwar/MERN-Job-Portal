@@ -25,7 +25,7 @@ function App() {
                 </ProtectedRoute>
               }
             >
-              <Route index path="Stats" element={<Stats />} />
+              <Route index  element={<Stats />} />
               <Route path="add-Job" element={<AddJob />} />
               <Route path="all-Job" element={<AllJobs />} />
               <Route path="Profile" element={<Profile />} />

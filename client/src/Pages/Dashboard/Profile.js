@@ -7,7 +7,6 @@ import {
   UpdateUser,
 } from "../../features/user/userSlice";
 import { Button, FormRow, Alert } from "../../components";
-import { getTokenFromLocalStorage } from "../../Utils/localStorage";
 const Profile = () => {
   const { isLoading, showAlert, user } = useSelector((store) => store.user);
   const dispatch = useDispatch();

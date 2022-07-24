@@ -1,17 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import customFetch from "../../Utils/axios";
-import JobSlice from "../Job/JobSlice";
-
 const initialState = {
   isLoading: false,
   stats: {},
   monthlyApplications: [],
+  showAlert: false,
+  alertText: "",
+  alertType: "",
 };
 
 export const ShowStats = createAsyncThunk('showStats',async (_, thunkAPI) => {
   try {
     const resp = await customFetch.get("/jobs/stats");
-
     return resp.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data.msg);
@@ -31,8 +31,16 @@ const StatusSlice = createSlice({
       state.isLoading = true;
     },
     [ShowStats.fulfilled]: (state, { payload }) => {
-     state.stats = payload.defaultStats;
-     state.monthlyApplications = payload.monthlyApplications;
+      state.stats = payload.defaultStatus;
+      state.isLoading = false;
+      state.monthlyApplications = payload.monthlyApplications;
+    },
+    [ShowStats.rejected]: (state) => {
+      state.isLoading = false;
+        state.isLoading = false;
+        state.showAlert = true;
+        state.alertText = "some error";
+        state.alertType = "danger";
     },
   },
 });

@@ -1,5 +1,5 @@
 import React from "react";
-import { JobsContainer, SearchContainer, Loading } from "../../components";
+import { JobsContainer, SearchContainer } from "../../components";
 const AllJobs = () => {
     return (
       <>
