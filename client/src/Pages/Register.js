@@ -42,22 +42,22 @@ const Register = () => {
       dispatch(registerUser(currentUser));
     }
   };
-  setTimeout(() => {
-    dispatch(clearAlert());
-  }, 3000);
   React.useEffect(() => {
     if (user) {
       setTimeout(() => {
         navigate("/");
-      }, 4000);
+      }, 3000);
     }
   }, [user, navigate]);
-  const toggleHangler = () => {
+  const toggleHandler = () => {
     SetValues({ ...values, isMember: !values.isMember });
   };
+   setTimeout(() => {
+     dispatch(clearAlert());
+   }, 2000);
   return (
     <Wrapper className="full-page">
-      <form className="form" onSubmit={submitHanlder}>
+      <form className="form" onSubmit={(e)=>e.preventDefault()}>
         <Logo />
         <h3>{values.isMember ? "Login" : "Register"}</h3>
         {showAlert && <Alert />}
@@ -95,6 +95,7 @@ const Register = () => {
           type="submit"
           disabled={isLoading}
           className={["btn btn-block"]}
+          handleChange={submitHanlder}
         >
           Submit
         </Button>
@@ -103,7 +104,7 @@ const Register = () => {
           <Button
             type="submit"
             className={["member-btn"]}
-            handleChange={toggleHangler}
+            handleChange={toggleHandler}
           >
             {!values.isMember ? "Login" : "Register"}
           </Button>
