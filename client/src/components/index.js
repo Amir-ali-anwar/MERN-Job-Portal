@@ -10,8 +10,13 @@ import FormRowSelect from "./FormRowSelect";
 import JobsContainer from './JobsContainer'
 import SearchContainer from './SearchContainer'
 import Loading from './Loading'
+import ChartContainer from "./ChartContainer";
+import StatsContainer from "./StatsContainer";
+
 export {
+  StatsContainer,
   SearchContainer,
+  ChartContainer,
   JobsContainer,
   FormRowSelect,
   ErrorHandler,

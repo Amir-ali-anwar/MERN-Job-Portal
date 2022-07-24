@@ -1,13 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import customFetch from "../../Utils/axios";
-import {
-  addUserToLocalStorage,
-  getUserFromLocalStorage,
-  removeUserFromLocalStorage,
-  addTokenToLocalStorage,
-  getTokenFromLocalStorage,
-} from "../../Utils/localStorage";
-
 const result = localStorage.getItem("user") || "";
 const user = result ? JSON.parse(result) : "";
 const initialState = {
