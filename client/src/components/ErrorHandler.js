@@ -1,7 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { Button } from "../components/";
-import { ErrorBoundary } from "react-error-boundary";
 import Wrapper from "../assets/wrappers/Navbar";
 const ErrorHandler = ({ error, resetErrorBoundary }) => {
   return (
