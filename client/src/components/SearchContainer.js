@@ -3,28 +3,57 @@ import { FormRow, FormRowSelect,Button } from ".";
 import Wrapper from "../assets/wrappers/SearchContainer";
 import { useSelector, useDispatch } from "react-redux";
 const SearchContainer = () => {
-  const { search, searchStatus, sort, sortOptions, isLoading } = useSelector(
-    (store) => store.Stats
-  );
+  const {
+    search,
+    searchStatus,
+    sort,
+    sortOptions,
+    isLoading,
+    searchType,
+  } = useSelector((store) => store.Stats);
   const { jobTypeOptions, statusOptions } = useSelector((store) => store.Job);
+  const handleSearch=(e)=>{
+    if(isLoading) return 
+    console.log(e.target.value)
+  }
   return (
     <Wrapper>
       <h4>search form</h4>
-      <form className="form">
+      <form className="form" onSubmit={(e) => e.preventDefault()}>
         <div className="form-center">
           <FormRow
+            type="text"
             name="search"
-            labelText="Search"
             className="form-input"
-            labelClass="form-label"
+            labelText="search"
+            value={search}
+            handleChange={handleSearch}
           />
-          <FormRow
-            name="status"
-            labelText="Status"
-            className="form-input"
-            labelClass="form-label"
+          {/* search by status */}
+          <FormRowSelect
+            labelText="status"
+            name="searchStatus"
+            value={searchStatus}
+            handleChange={handleSearch}
+            list={["all", ...statusOptions]}
           />
 
+          {/* search by type*/}
+          <FormRowSelect
+            labelText="type"
+            name="searchType"
+            value={searchType}
+            handleChange={handleSearch}
+            list={["all", ...jobTypeOptions]}
+          />
+          {/* sort */}
+          <FormRowSelect
+            name="sort"
+            value={sort}
+            labelText="sort"
+            handleChange={handleSearch}
+            list={sortOptions}
+          />
           <Button className="btn btn-block btn-danger">clear filters</Button>
         </div>
       </form>
