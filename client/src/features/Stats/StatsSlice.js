@@ -30,6 +30,13 @@ const StatusSlice = createSlice({
     showstats: (state) => {
       return { ...state };
     },
+    clearFilters: (state) => {
+      console.log('clear called');
+      return { ...state,...initialState };
+    },
+    handleChange: (state, { payload: { name, value } }) => {
+      state[name] = value;
+    },
   },
   extraReducers: {
     [ShowStats.pending]: (state) => {
@@ -49,5 +56,5 @@ const StatusSlice = createSlice({
     },
   },
 });
-export const { showstats } = StatusSlice.actions;
+export const { showstats, clearFilters, handleChange } = StatusSlice.actions;
 export default StatusSlice.reducer;

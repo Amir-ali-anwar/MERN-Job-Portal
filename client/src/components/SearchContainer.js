@@ -1,7 +1,8 @@
 import React from 'react'
+import { useDispatch, useSelector } from "react-redux";
 import { FormRow, FormRowSelect,Button } from ".";
 import Wrapper from "../assets/wrappers/SearchContainer";
-import { useSelector, useDispatch } from "react-redux";
+import { clearFilters, handleChange } from "../features/Stats/StatsSlice";
 const SearchContainer = () => {
   const {
     search,
@@ -12,9 +13,15 @@ const SearchContainer = () => {
     searchType,
   } = useSelector((store) => store.Stats);
   const { jobTypeOptions, statusOptions } = useSelector((store) => store.Job);
+    const dispatch = useDispatch();
   const handleSearch=(e)=>{
     if(isLoading) return 
     console.log(e.target.value)
+    dispatch(handleChange({name:e.target.name,value:e.target.value}));
+  }
+  const handleSubmit=(e)=>{
+    e.preventDefault()
+    dispatch(clearFilters());
   }
   return (
     <Wrapper>
@@ -54,7 +61,13 @@ const SearchContainer = () => {
             handleChange={handleSearch}
             list={sortOptions}
           />
-          <Button className="btn btn-block btn-danger">clear filters</Button>
+          <Button
+            className="btn btn-block btn-danger"
+            disabled={isLoading}
+            handleChange={handleSubmit}
+          >
+            clear filters
+          </Button>
         </div>
       </form>
     </Wrapper>
