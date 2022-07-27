@@ -90,7 +90,9 @@ const usrSlice = createSlice({
       addTokenToLocalStorage(token);
     },
     [registerUser.rejected]: (state, { payload }) => {
+      console.log('register payload',payload);
       state.isLoading = false;
+      state.showAlert = true;
       state.alertText = payload;
       state.alertType = "danger";
     },
