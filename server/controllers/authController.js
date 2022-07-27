@@ -6,6 +6,10 @@ const register = async (req, res, next) => {
   if (!name || !email || !password) {
     throw new BadRequestError("Please provide all the values");
   }
+  const alreadyExist= User.findOne(email)
+  if(alreadyExist){
+    throw new BadRequestError("Email already in use");
+  }
   const user = await User.create(req.body);
   const token = user.CreateJWT();
   return res.status(StatusCodes.CREATED).json({
