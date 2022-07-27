@@ -34,8 +34,13 @@ export const CreateJob = createAsyncThunk(
   }
 );
 export const GetAllJob = createAsyncThunk("user/Jobs", async (_, thunkAPI) => {
+  let { page, search, searchStatus, searchType, sort } = thunkAPI.getState().Stats;
+    let url = `/jobs?status=${searchStatus}&jobType=${searchType}&sort=${sort}&page=${page}`;
+    if(search){
+      url = url + `&search=${search}`;
+    }
   try {
-    const resp = await customFetch("/jobs");
+    const resp = await customFetch(url);
     return resp.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data.msg);

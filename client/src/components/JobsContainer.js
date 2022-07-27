@@ -22,9 +22,12 @@ const JobsContainer = () => {
      jobs,
      totalJobs,
    } = useSelector((store) => store.Job);
+   const { search, searchType, sort, searchStatus } = useSelector(
+     (store) => store.Stats
+   );
    React.useEffect(() => {
      dispatch(GetAllJob());
-   }, []);
+   }, [search, searchType, sort, searchStatus]);
     if (isLoading) {
       return <Loading center />;
     }
