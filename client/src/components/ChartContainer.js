@@ -7,7 +7,6 @@ import Button from './Button'
 const ChartContainer = () => {
   const [toggleBar,SettoggleBar]=useState(true);
   const { monthlyApplications } = useSelector((store) => store.Stats);
-  console.log(monthlyApplications);
   return (
     <Wrapper>
       <h4>Monthly Application</h4>

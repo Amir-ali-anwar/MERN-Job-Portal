@@ -1,7 +1,6 @@
 import React from 'react'
 import {BarChart,Bar,XAxis,YAxis,Tooltip,CartesianGrid,ResponsiveContainer} from 'recharts'
 const BarChatComponent = ({data}) => {
-  console.log(data)
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart data={data} margin={{ top: 50 }}>

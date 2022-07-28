@@ -4,6 +4,7 @@ import { GetAllJob } from "../features/Job/JobSlice";
 import Loading from "./Loading";
 import Job from "./Job";
 import Wrapper from "../assets/wrappers/JobsContainer";
+import PageBtnContainer from './PageBtnContainer';
 const JobsContainer = () => {
    const dispatch = useDispatch();
    const {
@@ -21,6 +22,7 @@ const JobsContainer = () => {
      editJob,
      jobs,
      totalJobs,
+     numOfPages,
    } = useSelector((store) => store.Job);
    const { search, searchType, sort, searchStatus } = useSelector(
      (store) => store.Stats
@@ -48,6 +50,7 @@ const JobsContainer = () => {
             return <Job key={job._id} {...job} />;
           })}
         </div>
+        {numOfPages>1 && <PageBtnContainer/>}
       </Wrapper>
     );
 }
