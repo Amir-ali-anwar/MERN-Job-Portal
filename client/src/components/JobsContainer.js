@@ -9,19 +9,7 @@ const JobsContainer = () => {
    const dispatch = useDispatch();
    const {
      isLoading,
-     isEditing,
-     showAlert,
-     displayAlert,
-     position,
-     company,
-     jobLocation,
-     jobType,
-     jobTypeOptions,
-     status,
-     statusOptions,
-     editJob,
      jobs,
-     totalJobs,
      numOfPages,
    } = useSelector((store) => store.Job);
    const { search, searchType, sort, searchStatus } = useSelector(

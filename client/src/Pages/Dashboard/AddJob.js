@@ -107,6 +107,7 @@ const AddJob = () => {
             <Button
               type="submit"
               className="btn btn-block submit-btn"
+              disabled={isLoading}
               handleChange={submitHandler}
             >
               Submit

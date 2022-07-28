@@ -1,6 +1,5 @@
 import React from 'react'
-import { useDispatch, useSelector } from "react-redux";
-import {ShowStats} from '../features/Stats/StatsSlice'
+import { useSelector } from "react-redux";
 import Wrapper from '../assets/wrappers/StatsContainer'
 import { FaSuitcaseRolling, FaCalendarCheck, FaBug } from "react-icons/fa";
 import StatsItem from './StatsItem'
