@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import customFetch from "../../Utils/axios";
+
 import {
   addUserToLocalStorage,
   getUserFromLocalStorage,
@@ -7,7 +8,6 @@ import {
   addTokenToLocalStorage,
   getTokenFromLocalStorage,
 } from "../../Utils/localStorage";
-
 const initialState = {
   isLoading: false,
   showAlert: false,
@@ -90,7 +90,9 @@ const usrSlice = createSlice({
       addTokenToLocalStorage(token);
     },
     [registerUser.rejected]: (state, { payload }) => {
+      console.log('register payload',payload);
       state.isLoading = false;
+      state.showAlert = true;
       state.alertText = payload;
       state.alertType = "danger";
     },
@@ -100,7 +102,7 @@ const usrSlice = createSlice({
     },
     [loginUser.fulfilled]: (state, { payload }) => {
       const { isAleadyMember: user, token } = payload;
-      console.log(token);
+      // console.log(token);
       state.isLoading = false;
       state.user = user;
       state.token = token;
@@ -121,8 +123,7 @@ const usrSlice = createSlice({
       state.isLoading = true;
     },
     [UpdateUser.fulfilled]: (state, { payload }) => {
-      const { isAleadyMember: user, token } = payload;
-      console.log(payload);
+      const {user, token } = payload;
       state.isLoading = false;
       state.user = user;
       state.token = token;

@@ -7,14 +7,13 @@ import {
   UpdateUser,
 } from "../../features/user/userSlice";
 import { Button, FormRow, Alert } from "../../components";
-import { getTokenFromLocalStorage } from "../../Utils/localStorage";
 const Profile = () => {
   const { isLoading, showAlert, user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const [values, SetValues] = React.useState({
     name: user.name || "",
     email: user.email || "",
-    lastname: user.lastName || "",
+    lastName: user.lastName || "",
     location: user.location || "",
   });
   const inputhandler = (e) => {
@@ -24,12 +23,12 @@ const Profile = () => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
-    const { name, email, lastname, location } = values;
-    if (!name || !email || !lastname || !location) {
+    const { name, email, lastName, location } = values;
+    if (!name || !email || !lastName || !location) {
       dispatch(displayAlert());
       return;
     }
-    const updateUser = { name, email, lastname, location };
+    const updateUser = { name, email, lastName, location };
     dispatch(UpdateUser(updateUser));
   };
   setTimeout(() => {
@@ -50,12 +49,12 @@ const Profile = () => {
             value={values.name}
           />
           <FormRow
-            name="lastname"
-            labelText="Last Name"
+            labelText="last name"
+            name="lastName"
             className="form-input"
             labelClass="form-label"
             handleChange={inputhandler}
-            value={values.lastname}
+            value={values.lastName}
           />
           <FormRow
             name="email"

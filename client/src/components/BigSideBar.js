@@ -15,9 +15,7 @@ const BigSideBar = () => {
         }
       >
         <div className="content">
-          <header>
-            <Logo />
-          </header>
+          <header><Logo /></header>
           <NavLinks />
         </div>
       </div>

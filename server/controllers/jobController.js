@@ -28,15 +28,25 @@ const deleteJob = async (req, res) => {
 };
 const getAllJobs = async (req, res) => {
   const { status, jobType, sort, search } = req.query;
+
   const queryObject = {
     createdBy: req.user.UserID,
   };
-  if (status !== "all") {
+  // add stuff based on condition
+
+  if (status && status !== "all") {
     queryObject.status = status;
   }
-  if (jobType !== "all") {
+  if (jobType && jobType !== "all") {
     queryObject.jobType = jobType;
   }
+  if (search) {
+    queryObject.position = { $regex: search, $options: "i" };
+  }
+  // NO AWAIT
+
+  let result = Job.find(queryObject);
+
   // chain sort conditions
 
   if (sort === "latest") {
@@ -51,20 +61,65 @@ const getAllJobs = async (req, res) => {
   if (sort === "z-a") {
     result = result.sort("-position");
   }
-  // pagination
+
+  //
+
+  // setup pagination
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
   const skip = (page - 1) * limit;
 
   result = result.skip(skip).limit(limit);
 
-  let result = Job.find(queryObject);
   const jobs = await result;
 
   const totalJobs = await Job.countDocuments(queryObject);
   const numOfPages = Math.ceil(totalJobs / limit);
+
   res.status(StatusCodes.OK).json({ jobs, totalJobs, numOfPages });
 };
+// const getAllJobs = async (req, res) => {
+//   const { status, jobType, sort, search } = req.query;
+//   const queryObject = {
+//     createdBy: req.user.UserID,
+//   };
+//   if (status !== "all") {
+//     queryObject.status = status;
+//   }
+//   if (jobType !== "all") {
+//     queryObject.jobType = jobType;
+//   }
+//   // chain sort conditions
+//   let result = Job.find(queryObject)
+
+//   if (sort === "latest") {
+//     result = result.sort("-createdAt");
+//   }
+//   if (sort === "oldest") {
+//     result = result.sort("createdAt");
+//   }
+//   if (sort === "a-z") {
+//     result = result.sort("position");
+//   }
+//   if (sort === "z-a") {
+//     result = result.sort("-position");
+//   }
+//    if (search) {
+//      queryObject.position = { $regex: search, $options: "i" };
+//    }
+//   // pagination
+//   const page = Number(req.query.page) || 1;
+//   const limit = Number(req.query.limit) || 10;
+//   const skip = (page - 1) * limit;
+
+//   result = result.skip(skip).limit(limit);
+
+//   const jobs = await result;
+//   console.log(jobs);
+//   const totalJobs = await Job.countDocuments(queryObject);
+//   const numOfPages = Math.ceil(totalJobs / limit);
+//   res.status(StatusCodes.OK).json({ jobs, totalJobs, numOfPages });
+// };
 const updateJob = async (req, res) => {
   const { id: jobId } = req.params;
   const { position, company } = req.body;
@@ -88,7 +143,7 @@ const showStats = async (req, res) => {
     { $match: { createdBy: mongoose.Types.ObjectId(req.user.UserID) } },
     { $group: { _id: "$status", count: { $sum: 1 } } },
   ]);
-  stats = stats.reduce((acc, curr) => {
+ stats = stats.reduce((acc, curr) => {
     const { _id: title, count } = curr;
     acc[title] = count;
     return acc;
@@ -98,32 +153,32 @@ const showStats = async (req, res) => {
     interview: stats.interview || 0,
     declined: stats.declined || 0,
   };
-  const monthlyApplications = await Job.aggregate([
+  
+  let monthlyApplications = await Job.aggregate([
     { $match: { createdBy: mongoose.Types.ObjectId(req.user.UserID) } },
     {
       $group: {
-        _id: {
-          year: { $year: "$createdAt" },
-          month: { month: "$createdA" },
-          count: { $sum: 1 },
-        },
+        _id: { year: { $year: "$createdAt" }, month: { $month: "$createdAt" } },
+        count: { $sum: 1 },
       },
     },
     { $sort: { "_id.year": -1, "_id.month": -1 } },
     { $limit: 6 },
   ]);
-  monthlyApplications = monthlyApplications
-    .map((item) => {
-      const {
-        _id: { month, year },
-      } = item;
-      const date = moment()
-        .month(month - 1)
-        .year(year - 1)
-        .format();
-      return { date, count };
-    })
-    .reverse();
+    monthlyApplications = monthlyApplications
+      .map((item) => {
+        const {
+          _id: { year, month },
+          count,
+        } = item;
+        const date = moment()
+          .month(month - 1)
+          .year(year)
+          .format("MMM Y");
+        return { date, count };
+      })
+      .reverse();
+      console.log(monthlyApplications)
   res.status(StatusCodes.OK).json({ defaultStatus, monthlyApplications });
 };
 export { createJob, deleteJob, getAllJobs, updateJob, showStats };
