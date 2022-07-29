@@ -89,6 +89,9 @@ const JobSlice = createSlice({
     setEditJob: (state, { payload }) => {
       return { ...state, isEditing: true, ...payload };
     },
+    changePage:(state,{payload})=>{
+      state.page=payload
+    },
   },
   extraReducers: {
     [CreateJob.pending]: (state) => {
@@ -155,5 +158,6 @@ export const {
          deleteJob,
          ShowLoading,
          hideLoading,
+         changePage,
        } = JobSlice.actions;
 export default JobSlice.reducer;

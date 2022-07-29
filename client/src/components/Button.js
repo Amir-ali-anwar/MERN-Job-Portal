@@ -6,10 +6,12 @@ const Button = ({
   children,
   handleChange,
   disabled,
+  key,
   ...rest
 }) => {
   return (
     <button
+      key={key}
       type={type}
       className={className}
       onClick={handleChange}
