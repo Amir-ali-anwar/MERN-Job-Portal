@@ -57,7 +57,7 @@ const Register = () => {
    }, 2000);
   return (
     <Wrapper className="full-page">
-      <form className="form" onSubmit={(e)=>e.preventDefault()}>
+      <form className="form" onSubmit={(e) => e.preventDefault()}>
         <Logo />
         <h3>{values.isMember ? "Login" : "Register"}</h3>
         {showAlert && <Alert />}
@@ -107,6 +107,12 @@ const Register = () => {
             handleChange={toggleHandler}
           >
             {!values.isMember ? "Login" : "Register"}
+          </Button>
+          <Button
+            type="submit"
+            className={["member-btn"]}
+          >
+           Forgot password?
           </Button>
         </p>
       </form>
