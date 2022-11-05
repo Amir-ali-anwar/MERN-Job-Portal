@@ -29,8 +29,12 @@ const login = async (req, res) => {
     throw new BadRequestError("Please enter email and password");
   }
   const isAleadyMember = await User.findOne({ email }).select("+password");
+  console.log('already',isAleadyMember);
   if (!isAleadyMember) {
     throw new UnAuthenticatedError("Not A Member? Please Register First");
+  }
+  if (!isAleadyMember.isVerified) {
+    throw new UnAuthenticatedError("Please Verify your Email");
   }
   const isPassword = await isAleadyMember.comparePassword(password);
   if (!isPassword) {

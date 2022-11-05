@@ -37,6 +37,10 @@ const UserSchema = new mongoose.Schema({
     maxlength: 20,
     default: "my city",
   },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 UserSchema.pre("save", async function () {
