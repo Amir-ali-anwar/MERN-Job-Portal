@@ -12,6 +12,7 @@ import JobRoutes from "./routes/jobRoutes.js";
 
 const app = express();
 app.use(express.json());
+app.disable('x-powered-by')
 if (process.env.NODE_ENV !== "production") {
   app.use(morgan("tiny"));
 }
