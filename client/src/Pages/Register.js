@@ -15,6 +15,7 @@ const initialState = {
   name: "",
   email: "",
   password: "",
+  confirmpass:'',
   isMember: true,
 };
 
@@ -30,8 +31,8 @@ const Register = () => {
   };
   const submitHanlder = (e) => {
     e.preventDefault();
-    const { name, email, password, isMember } = values;
-    if (!email || !password || (!isMember && !name)) {
+    const { name, email, password, isMember, confirmpass } = values;
+    if (!email || !password || (!isMember && !name && !confirmpass)) {
       dispatch(displayAlert());
       return;
     }
@@ -90,6 +91,17 @@ const Register = () => {
           value={values.password}
           handleChange={inputhandler}
         />
+         {!values.isMember && (
+         <FormRow
+          name="confirmpass"
+          labelText="Confirm Password"
+          type="password"
+          className="form-input"
+          labelClass="form-label"
+          value={values.confirmpass}
+          handleChange={inputhandler}
+        />
+        )}
         <Button
           size="sm"
           type="submit"
