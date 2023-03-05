@@ -15,4 +15,11 @@ const auth = (req, res, next) => {
     throw new UnAuthenticatedError("Authentication Invalid");
   }
 };
-export default auth;
+const localVariables=(req,res,next)=>{
+  req.app.locals= {
+    OTP:null,
+    resetsession:false
+  }
+  next()
+}
+export {auth,localVariables}
