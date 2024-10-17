@@ -58,7 +58,7 @@ const Register = () => {
   return (
     <Wrapper className="full-page">
       <form className="form" onSubmit={(e)=>e.preventDefault()}>
-        <Logo />
+        {/* <Logo /> */}
         <h3>{values.isMember ? "Login" : "Register"}</h3>
         {showAlert && <Alert />}
 
